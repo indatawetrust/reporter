@@ -1,4 +1,6 @@
+```
 npm i -g reporter-cli
+```
 
 ##### -- site
 
@@ -23,7 +25,8 @@ title element selector
 page limit number
 
 ##### demo
-
+```
 reporter --site https://news.ycombinator.com/news?p= --list .athing --link .storylink --title .storylink --limit 21
+```
 
 ![gif](https://media.giphy.com/media/3og0IwHbwwflVbaVtm/giphy.gif)
