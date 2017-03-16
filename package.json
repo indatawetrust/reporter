@@ -1,5 +1,5 @@
 {
-  "name": "reporter",
+  "name": "reporter-cli",
   "version": "0.0.1",
   "description": "Promise crawler",
   "main": "index.js",
