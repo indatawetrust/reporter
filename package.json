@@ -1,0 +1,32 @@
+{
+  "name": "reporter",
+  "version": "0.0.1",
+  "description": "Promise crawler",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "indatawetrust",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/indatawetrust/reporter.git"
+  },
+  "keywords": [
+    "promise"
+  ],
+  "bugs": {
+    "url": "https://github.com/indatawetrust/reporter/issues"
+  },
+  "bin": {
+    "reporter": "index.js"
+  },
+  "homepage": "https://github.com/indatawetrust/reporter#readme",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "jsonfile": "^2.4.0",
+    "p-queue": "^1.0.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.1.1"
+  }
+}
