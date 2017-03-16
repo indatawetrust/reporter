@@ -1,3 +1,3 @@
 #### reporter
 
-npm i -g reporter
+npm i -g reporter-cli
