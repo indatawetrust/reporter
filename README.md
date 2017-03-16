@@ -1,1 +1,3 @@
-# reporter
+#### reporter
+
+npm i -g reporter
