@@ -7,29 +7,66 @@ const PQueue = require('p-queue'),
       argv = require('yargs').argv,
       ms = require('ms'),
       progress = require('progress'),
+      fs = require('fs'),
       start = +new Date()
 
 let page = 1,
     links = [],
+    config = {},
+    heartbeat = null,
     bar = new progress(':bar :percent', { total: argv.limit, width: 20 })
+
+try {
+
+  config = fs.statSync(`${process.cwd()}/conf.json`);
+
+} catch (e) {
+  
+  config.site = argv.site
+  config.list = argv.list
+  config.link = argv.link
+  config.title = argv.title
+  config.limit = argv.limit
+  config.heartbeat = argv.heartbeat
+    
+}
+
+try {
+  
+  if (config.heartbeat)
+    heartbeat = require(`${process.cwd()}/heartbeat.js`);
+
+} catch (e) {
+  
+  console.log(`heartbeat.js file not found.`)
+  process.exit()
+    
+}
 
 const queue = new PQueue({ concurrency: 1 }),
       crawl = body => {
         
         let $ = cheerio.load(body)
 
-        if ($(argv.list).length && page <= argv.limit) {
+        if ($(config.list).length && page <= argv.limit) {
 
           bar.tick(1)
           
-          $(argv.list).each((i, el) => { 
-            links.push({
-              url: $(el).find(argv.link).attr('href'),
-              text: $(el).find(argv.title).text().trim().replace(/[\n\t]/g, '')
-            })
+          $(config.list).each((i, el) => {
+
+            let item = {
+              url: $(el).find(config.link).attr('href'),
+              text: $(el).find(config.title).text().trim().replace(/[\n\t]/g, '')
+            }
+            
+            links.push(item)
+            
+            if (heartbeat)
+              heartbeat(item)
+
           })
         
-          queue.add(() => request(`${argv.site}${++page}`)).then(crawl);
+          queue.add(() => request(`${config.site}${++page}`)).then(crawl);
 
         } else {
 
@@ -41,4 +78,4 @@ const queue = new PQueue({ concurrency: 1 }),
 
       }
 
-queue.add(() => request(`${argv.site}${page}`)).then(crawl)
+queue.add(() => request(`${config.site}${page}`)).then(crawl)
