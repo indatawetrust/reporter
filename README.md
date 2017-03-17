@@ -1,3 +1,5 @@
+[![Travis Build Status](https://img.shields.io/travis/indatawetrust/reporter.svg)](https://travis-ci.org/indatawetrust/reporter)
+
 ```
 npm i -g reporter-cli
 ```
