@@ -1,8 +1,7 @@
-nguage: node_js
+language: node_js
 node_js:
   - "6"
 before_install:
   - npm i -g reporter-cli
 script:
   - reporter --site https://news.ycombinator.com/news\?p\= --list .athing --link .storylink --title .storylink --limit 10
-
