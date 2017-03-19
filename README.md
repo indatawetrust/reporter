@@ -44,7 +44,7 @@ function to run after each request
 
 example:
 
-````js
+```js
 module.exports = item => {
   console.log(item.url, item.title)
 }
