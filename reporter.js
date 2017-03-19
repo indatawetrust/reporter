@@ -27,12 +27,14 @@ try {
   config.link = argv.link
   config.title = argv.title
   config.limit = argv.limit
+  config.heartbeat = argv.heartbeat
     
 }
 
 try {
   
-  heartbeat = require(`${process.cwd()}/heartbeat.js`);
+  if (config.heartbeat)
+    heartbeat = require(`${process.cwd()}/heartbeat.js`);
 
 } catch (e) {
   
