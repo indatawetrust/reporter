@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-const PQueue = require('p-queue'),
+const PQueue = require('p-queue-safe'),
       request = require('request-promise'),
       cheerio = require('cheerio'),
       json = require('jsonfile'),
