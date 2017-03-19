@@ -24,6 +24,30 @@ title element selector
 
 page limit number
 
+##### -- file
+
+output filename
+
+##### -- start
+
+crawl start page
+
+##### -- end
+
+crawl end page
+
+##### -- heartbeat.js
+
+function to run after each request
+
+example:
+
+````js
+module.exports = item => {
+  console.log(item.url, item.title)
+}
+```
+
 ##### demo
 ```
 reporter --site https://news.ycombinator.com/news?p= --list .athing --link .storylink --title .storylink --limit 21

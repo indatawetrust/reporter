@@ -14,7 +14,7 @@ let page = 1,
     links = [],
     config = {},
     heartbeat = null,
-    bar = new progress(':bar :percent', { total: argv.limit, width: 20 })
+    bar = new progress(':bar :percent :len link saved', { total: argv.limit ? argv.limit : (argv.end-argv.start), width: 20 })
 
 try {
 
@@ -27,14 +27,12 @@ try {
   config.link = argv.link
   config.title = argv.title
   config.limit = argv.limit
-  config.heartbeat = argv.heartbeat
     
 }
 
 try {
   
-  if (config.heartbeat)
-    heartbeat = require(`${process.cwd()}/heartbeat.js`);
+  heartbeat = require(`${process.cwd()}/heartbeat.js`);
 
 } catch (e) {
   
@@ -43,20 +41,22 @@ try {
     
 }
 
-const queue = new PQueue({ concurrency: 1 }),
+const queue = new PQueue({ retry: true, }),
       crawl = body => {
         
         let $ = cheerio.load(body)
 
-        if ($(config.list).length && page <= argv.limit) {
+        if ($(config.list).length && page <= (argv.limit ? argv.limit : (argv.end-argv.start))) {
 
-          bar.tick(1)
+          bar.tick({
+            len: links.length 
+          })
           
           $(config.list).each((i, el) => {
-
+            
             let item = {
               url: $(el).find(config.link).attr('href'),
-              text: $(el).find(config.title).text().trim().replace(/[\n\t]/g, '')
+              title: $(el).find(config.title).text().trim().replace(/[\n\t]/g, '')
             }
             
             links.push(item)
@@ -65,14 +65,18 @@ const queue = new PQueue({ concurrency: 1 }),
               heartbeat(item)
 
           })
-        
+          
           queue.add(() => request(`${config.site}${++page}`)).then(crawl);
 
         } else {
+          
+          bar.tick({
+            len: links.length 
+          })
 
           console.log(`Completed in ${ms(+new Date()-start)}.\n${links.length} link saved to report.json file.`)
           
-          json.writeFileSync(`${process.cwd()}/report.json`, links)
+          json.writeFileSync(`${process.cwd()}/${argv.file ? argv.file : 'report'}.json`, links)
 
         }
 
