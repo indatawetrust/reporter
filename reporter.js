@@ -10,25 +10,26 @@ const PQueue = require('p-queue-safe'),
       fs = require('fs'),
       start = +new Date()
 
-let page = 1,
-    links = [],
-    config = {},
-    heartbeat = null,
-    bar = new progress(':bar :percent :len link saved', { total: argv.limit ? argv.limit : (argv.end-argv.start), width: 20 }),
-    special = typeof argv.special === "string" ? 
-              argv.special.split(',')
-                          .map(d => ({[d.split(':')[0].trim()]: d.split(':')[1].trim().split('*')}))
-                          .reduce((a,b) => Object.assign(a,b)) : null;
+let config = {}
 
 try {
 
-  config = fs.statSync(`${process.cwd()}/conf.json`);
+  config = require(`${process.cwd()}/conf.json`)
 
 } catch (e) {
   
   config = argv
     
 }
+
+let page = 1,
+    links = [],
+    heartbeat = null,
+    bar = new progress(':bar :percent :len link saved', { total: config.limit ? config.limit : (config.end-config.start), width: 20 }),
+    special = typeof config.special === "string" ? 
+              config.special.split(',')
+                          .map(d => ({[d.split(':')[0].trim()]: d.split(':')[1].trim().split('*')}))
+                          .reduce((a,b) => Object.assign(a,b)) : null;
 
 try {
   
@@ -63,7 +64,7 @@ const queue = new PQueue({ retry: true, }),
         
         let $ = cheerio.load(body)
 
-        if ($(config.list).length && page <= (argv.limit ? argv.limit : (argv.end-argv.start))) {
+        if ($(config.list).length && page <= (config.limit ? config.limit : (config.end-config.start))) {
           bar.tick({
             len: links.length 
           })
@@ -79,7 +80,7 @@ const queue = new PQueue({ retry: true, }),
               if (special[elem][0].match(/[<\^>]/)) {
                 let relative = special[elem][0].match(/[<\^>]/)[0],
                     selector = special[elem][0].replace(/[<\^> ]/g, ''),
-                    attr = special[elem][1]
+                    attr = special[elem][1],
                     key = elem
                 
                 elem = jumper($, el, relative)
@@ -115,7 +116,7 @@ const queue = new PQueue({ retry: true, }),
 
           console.log(`Completed in ${ms(+new Date()-start)}.\n${links.length} link saved to report.json file.`)
           
-          json.writeFileSync(`${process.cwd()}/${argv.file ? argv.file : 'report'}.json`, links)
+          json.writeFileSync(`${process.cwd()}/${config.file ? config.file : 'report'}.json`, links)
 
         }
 

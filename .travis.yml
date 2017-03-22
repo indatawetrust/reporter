@@ -4,4 +4,4 @@ node_js:
 before_install:
   - npm i -g reporter-cli
 script:
-  - reporter --site https://news.ycombinator.com/news\?p\= --list .athing --link .storylink --title .storylink --limit 10 --special 'username: >.hnuser*text, score: >.score*text'
+  - reporter
