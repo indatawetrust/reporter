@@ -42,7 +42,7 @@ crawl end page
 
 <key>: <selector>:<attribute>, <key>: <selector>:<attribute>..
 
-````js
+```js
 --special 'username: >.hnuser*text, score: >.score*text'
 ```
 
