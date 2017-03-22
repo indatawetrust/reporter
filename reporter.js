@@ -14,7 +14,11 @@ let page = 1,
     links = [],
     config = {},
     heartbeat = null,
-    bar = new progress(':bar :percent :len link saved', { total: argv.limit ? argv.limit : (argv.end-argv.start), width: 20 })
+    bar = new progress(':bar :percent :len link saved', { total: argv.limit ? argv.limit : (argv.end-argv.start), width: 20 }),
+    special = typeof argv.special === "string" ? 
+              argv.special.split(',')
+                          .map(d => ({[d.split(':')[0].trim()]: d.split(':')[1].trim().split('*')}))
+                          .reduce((a,b) => Object.assign(a,b)) : null;
 
 try {
 
@@ -22,12 +26,7 @@ try {
 
 } catch (e) {
   
-  config.site = argv.site
-  config.list = argv.list
-  config.link = argv.link
-  config.title = argv.title
-  config.limit = argv.limit
-  config.heartbeat = argv.heartbeat
+  config = argv
     
 }
 
@@ -43,13 +42,28 @@ try {
     
 }
 
+const jumper = ($, el, option) => {
+  switch (option) {
+    case '<':
+        el = $(el).prev()
+      break
+    case '^':
+        el = $(el).parent()
+      break
+    case '>':
+        el = $(el).next()
+      break
+  }
+
+  return $(el)
+}
+
 const queue = new PQueue({ retry: true, }),
       crawl = body => {
         
         let $ = cheerio.load(body)
 
         if ($(config.list).length && page <= (argv.limit ? argv.limit : (argv.end-argv.start))) {
-
           bar.tick({
             len: links.length 
           })
@@ -59,6 +73,29 @@ const queue = new PQueue({ retry: true, }),
             let item = {
               url: $(el).find(config.link).attr('href'),
               title: $(el).find(config.title).text().trim().replace(/[\n\t]/g, '')
+            }
+            
+            for (let elem in special) {
+              if (special[elem][0].match(/[<\^>]/)) {
+                let relative = special[elem][0].match(/[<\^>]/)[0],
+                    selector = special[elem][0].replace(/[<\^> ]/g, ''),
+                    attr = special[elem][1]
+                    key = elem
+                
+                elem = jumper($, el, relative)
+                
+                if (attr === 'text') {
+                  item[key] = elem.find(selector).text()
+                } else {
+                  item[key] = elem.find(selector).attr(attr)
+                }
+              } else {
+                if (special[elem][1] === 'text') {
+                  item[elem] = $(el).find(special[elem][0]).text()
+                } else {
+                  item[elem] = $(el).find(special[elem][0]).attr(special[elem][1])
+                }
+              }
             }
             
             links.push(item)

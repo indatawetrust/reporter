@@ -38,6 +38,26 @@ crawl start page
 
 crawl end page
 
+##### -- special
+
+<key>: <selector>:<attribute>, <key>: <selector>:<attribute>..
+
+````js
+--special 'username: >.hnuser*text, score: >.score*text'
+```
+
+###### ^
+
+parent element
+
+###### <
+
+previous sibling element
+
+###### >
+
+next sibling element
+
 ##### -- heartbeat.js
 
 function to run after each request
@@ -52,7 +72,10 @@ module.exports = item => {
 
 ##### demo
 ```
-reporter --site https://news.ycombinator.com/news?p= --list .athing --link .storylink --title .storylink --limit 21
+reporter --site https://news.ycombinator.com/news?p= 
+         --list .athing
+         --link .storylink
+         --title .storylink
+         --limit 10
+         --special 'username: >.hnuser*text, score: >.score*text'
 ```
-
-![gif](https://media.giphy.com/media/3og0IwHbwwflVbaVtm/giphy.gif)

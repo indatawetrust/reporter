@@ -1,7 +1,7 @@
 {
   "name": "reporter-cli",
-  "version": "0.1.0",
-  "description": "Promise crawler",
+  "version": "0.1.1",
+  "description": "Crawler queue creation tool for paging",
   "main": "index.js",
   "scripts": {
   },
@@ -12,7 +12,8 @@
     "url": "git+ssh://git@github.com/indatawetrust/reporter.git"
   },
   "keywords": [
-    "promise"
+    "promise",
+    "crawler"
   ],
   "bugs": {
     "url": "https://github.com/indatawetrust/reporter/issues"
