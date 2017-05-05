@@ -21,6 +21,7 @@ try {
   config = Object.assign(argv, {
     limit: 10
   })
+  console.log(config)
     
 }
 
