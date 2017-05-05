@@ -18,7 +18,9 @@ try {
 
 } catch (e) {
   
-  config = argv
+  config = Object.assign(argv, {
+    limit: 10
+  })
     
 }
 
@@ -30,7 +32,6 @@ let page = 1,
               config.special.split(',')
                           .map(d => ({[d.split(':')[0].trim()]: d.split(':')[1].trim().split('*')}))
                           .reduce((a,b) => Object.assign(a,b)) : null;
-
 try {
   
   if (config.heartbeat)
@@ -63,14 +64,13 @@ const queue = new PQueue({ retry: true, }),
       crawl = body => {
         
         let $ = cheerio.load(body)
-
+        
         if ($(config.list).length && page <= (config.limit ? config.limit : (config.end-config.start))) {
           bar.tick({
             len: links.length 
           })
           
           $(config.list).each((i, el) => {
-            
             let item = {
               url: $(el).find(config.link).attr('href'),
               title: $(el).find(config.title).text().trim().replace(/[\n\t]/g, '')
