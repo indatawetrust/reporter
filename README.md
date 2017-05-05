@@ -1,5 +1,7 @@
 [![Travis Build Status](https://img.shields.io/travis/indatawetrust/reporter.svg)](https://travis-ci.org/indatawetrust/reporter)
 
+![img](https://nodei.co/npm/reporter-cli.png?downloads=true)
+
 ```
 npm i -g reporter-cli
 ```
@@ -41,7 +43,7 @@ crawl end page
 ##### -- special
 
 ```
-<key>: <selector>:<attribute>, <key>: <selector>:<attribute>..
+<key>: <selector>*<attribute>, <key>: <selector>*<attribute>..
 ```
 
 ```js
