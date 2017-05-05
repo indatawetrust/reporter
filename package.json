@@ -1,6 +1,6 @@
 {
   "name": "reporter-cli",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Crawler queue creation tool for paging",
   "main": "index.js",
   "scripts": {},
