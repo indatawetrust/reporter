@@ -76,10 +76,10 @@ module.exports = item => {
 
 ##### demo
 ```bash
-reporter --site https://news.ycombinator.com/news?p= \ 
-         \ --list .athing
-         \ --link .storylink
-         \ --title .storylink
-         \ --limit 10
-         \ --special 'username: >.hnuser*text, score: >.score*text'
+reporter --site https://news.ycombinator.com/news?p= \
+  --list .athing \
+  --link .storylink \
+  --title .storylink \
+  --limit 10 \
+  --special 'username: >.hnuser*text, score: >.score*text'
 ```
