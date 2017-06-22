@@ -19,9 +19,8 @@ try {
 } catch (e) {
   
   config = Object.assign(argv, {
-    limit: 10
+    limit: argv.limit || 10
   })
-
 }
 
 let page = 1,
@@ -114,9 +113,9 @@ const queue = new PQueue({ retry: true, }),
             len: links.length 
           })
 
-          console.log(`Completed in ${ms(+new Date()-start)}.\n${links.length} link saved to report.json file.`)
+          console.log(`Completed in ${ms(+new Date()-start)}.\n${links.length} link saved to ${config.file || 'report'}.json file.`)
           
-          json.writeFileSync(`${process.cwd()}/${config.file ? config.file : 'report'}.json`, links)
+          json.writeFileSync(`${process.cwd()}/${config.file || 'report'}.json`, links)
 
         }
 
