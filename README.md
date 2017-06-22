@@ -75,11 +75,11 @@ module.exports = item => {
 ```
 
 ##### demo
-```
-reporter --site https://news.ycombinator.com/news?p= 
-         --list .athing
-         --link .storylink
-         --title .storylink
-         --limit 10
-         --special 'username: >.hnuser*text, score: >.score*text'
+```bash
+reporter --site https://news.ycombinator.com/news?p= \ 
+         \ --list .athing
+         \ --link .storylink
+         \ --title .storylink
+         \ --limit 10
+         \ --special 'username: >.hnuser*text, score: >.score*text'
 ```
