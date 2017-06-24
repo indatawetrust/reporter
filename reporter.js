@@ -71,7 +71,7 @@ const queue = new PQueue({ retry: true, }),
           
           $(config.list).each((i, el) => {
             let item = {
-              url: $(el).find(config.link).attr('href'),
+              url: config.link ? $(el).find(config.link).attr('href') : $(el).attr('href'),
               title: $(el).find(config.title).text().trim().replace(/[\n\t]/g, '')
             }
             
@@ -85,20 +85,27 @@ const queue = new PQueue({ retry: true, }),
                 elem = jumper($, el, relative)
                 
                 if (attr === 'text') {
-                  item[key] = elem.find(selector).text()
+                  item[key] = elem.find(selector).text().replace(/\r|\t|\n/g, '').replace(/ {2,}/g, '').trim()
                 } else {
                   item[key] = elem.find(selector).attr(attr)
                 }
               } else {
                 if (special[elem][1] === 'text') {
-                  item[elem] = $(el).find(special[elem][0]).text()
+                  item[elem] = $(el).find(special[elem][0]).text().replace(/\r|\t|\n/g, '').replace(/ {2,}/g, '').trim()
                 } else {
                   item[elem] = $(el).find(special[elem][0]).attr(special[elem][1])
                 }
               }
             }
             
-            links.push(item)
+            let is = []
+
+            for (let i in item) {
+              is.push(item[i] && item[i].trim() != '')   
+            }
+            
+            if (is.filter(e => e).length > 1)
+              links.push(item)
             
             if (heartbeat)
               heartbeat(item)
