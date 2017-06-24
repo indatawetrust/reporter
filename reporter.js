@@ -8,7 +8,8 @@ const PQueue = require('p-queue-safe'),
       ms = require('ms'),
       progress = require('progress'),
       fs = require('fs'),
-      start = +new Date()
+      start = +new Date(),
+      url = require('url')
 
 let config = {}
 
@@ -70,8 +71,12 @@ const queue = new PQueue({ retry: true, }),
           })
           
           $(config.list).each((i, el) => {
+            let main = url.parse(config.site, true)
+
+            main = `${main.protocol}\/\/${main.hostname}`
+
             let item = {
-              url: config.link ? $(el).find(config.link).attr('href') : $(el).attr('href'),
+              url: url.resolve(main, config.link ? $(el).find(config.link).attr('href') : $(el).attr('href')),
               title: $(el).find(config.title).text().trim().replace(/[\n\t]/g, '')
             }
             

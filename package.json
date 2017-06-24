@@ -1,6 +1,6 @@
 {
   "name": "reporter-cli",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Crawler queue creation tool for paging",
   "main": "index.js",
   "scripts": {},
@@ -18,7 +18,7 @@
     "url": "https://github.com/indatawetrust/reporter/issues"
   },
   "bin": {
-    "reporter": "index.js"
+    "reporter": "reporter.js"
   },
   "homepage": "https://github.com/indatawetrust/reporter#readme",
   "dependencies": {
