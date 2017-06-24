@@ -104,7 +104,7 @@ const queue = new PQueue({ retry: true, }),
               is.push(item[i] && item[i].trim() != '')   
             }
             
-            if (is.filter(e => e).length > 1)
+            if (is.filter(e => e).length > (config.min || 1))
               links.push(item)
             
             if (heartbeat)
